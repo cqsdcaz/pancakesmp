@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store | PanCake SMP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-black: #050505;
+            --card-gray: #0a0a0a;
+            --border-gray: #1a1a1a;
+            --accent-orange: #ff9901;
+            --text-white: #ffffff;
+            --text-gray: #71717a;
+            --success-green: #22c55e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair !important; }
+
+        body { 
+            background-color: var(--bg-black); 
+            color: var(--text-white); 
+            font-family: 'Inter', sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; width: 100%; }
+
+        .back-btn { text-decoration: none; color: var(--text-gray); font-weight: 700; font-size: 13px; margin-bottom: 30px; display: inline-block; transition: 0.2s; }
+        .back-btn:hover { color: var(--accent-orange); }
+
+        .header { margin-bottom: 30px; }
+        .header h1 { font-size: 32px; font-weight: 900; }
+        .header p { color: var(--text-gray); font-size: 14px; margin-top: 5px; }
+
+        .store-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 16px; 
+        }
+
+        .card {
+            background: var(--card-gray);
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
+            padding: 24px;
+            transition: 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .card:hover { border-color: #333; transform: translateY(-3px); }
+        .card.popular { border-color: var(--accent-orange); background: rgba(255,153,1,0.02); }
+
+        .badge { 
+            background: var(--accent-orange); color: #000; 
+            font-size: 10px; font-weight: 900; padding: 3px 8px; 
+            border-radius: 4px; display: inline-block; margin-bottom: 10px;
+        }
+
+        .item-title { font-size: 18px; font-weight: 800; }
+        .item-desc { font-size: 12px; color: var(--text-gray); margin-bottom: 20px; }
+        .price { font-size: 20px; font-weight: 900; }
+        .price span { font-size: 11px; color: var(--text-gray); }
+
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1000; display:none; align-items:center; justify-content:center; }
+        .modal-content { background:#0d0d0d; border:1px solid #222; border-radius:16px; width:95%; max-width:440px; padding:32px; position:relative; }
+        .close-btn { position:absolute; top:20px; right:20px; color:#555; font-size:20px; cursor:pointer; }
+        
+        label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: #eee; }
+        input { width: 100%; background: #151515; border: 1px solid #252525; padding: 12px; border-radius: 8px; color: #fff; margin-bottom: 20px; outline: none; transition: 0.2s; }
+        input:focus { border-color: var(--accent-orange); }
+
+        .method-box { border: 1px solid #222; padding: 14px; border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
+        .method-box:hover { background: #151515; }
+        .method-box.selected { border-color: var(--accent-orange); background: rgba(255,153,1,0.05); }
+        
+        .payment-info-box { background: #111; border: 1px solid #222; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .address-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; word-break: break-all; font-family: monospace; font-size: 12px; }
+        .copy-icon { color: var(--text-gray); cursor: pointer; padding: 5px; }
+        
+        .alert-box { border-radius: 8px; padding: 12px; font-size: 12px; margin-bottom: 15px; line-height: 1.4; display: flex; gap: 10px; }
+        .alert-blue { background: rgba(59, 130, 246, 0.1); border: 1px solid #1e3a8a; color: #93c5fd; }
+        .alert-orange { background: rgba(255, 153, 1, 0.1); border: 1px solid #7c4a03; color: #fdba74; }
+
+        .btn-row { display: flex; gap: 10px; margin-top: 20px; }
+        .primary-btn { flex: 2; background: var(--accent-orange); color: #000; border: none; padding: 14px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .back-modal-btn { flex: 1; background: #000; color: #fff; border: 1px solid #222; border-radius: 10px; font-weight: 700; cursor: pointer; }
+
+        @media (max-width: 768px) { .store-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> BACK TO HOME</a>
+        
+        <div class="header">
+            <h1>Server Crate Keys</h1>
+            <p>Enhance your journey with exclusive rewards</p>
+        </div>
+
+        <div class="store-grid">
+            <div class="card" onclick="openModal('Spawners Key', '$4.00')">
+                <h3 class="item-title">Spawners Key</h3>
+                <p class="item-desc">Unlock mob spawners</p>
+                <div class="price">$4.00 <span>USD</span></div>
+            </div>
+
+            <div class="card popular" onclick="openModal('Legendary Key', '$6.00')">
+                <div class="badge">BEST VALUE</div>
+                <h3 class="item-title">Legendary Key</h3>
+                <p class="item-desc">Highest tier rewards</p>
+                <div class="price" style="color: var(--accent-orange);">$6.00 <span>USD</span></div>
+            </div>
+
+            <div class="card" onclick="openModal('Epic Key', '$3.00')">
+                <h3 class="item-title">Epic Key</h3>
+                <p class="item-desc">High tier crate rewards</p>
+                <div class="price">$3.00 <span>USD</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="purchase-modal" class="modal-overlay">
+        <div class="modal-content" id="step-1">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title" style="font-weight: 900; margin-bottom: 5px;">Purchase</h2>
+            <p style="font-weight: 800; margin-bottom: 25px;">Total: <span id="modal-price" style="color: var(--accent-orange);"></span></p>
+
+            <label>Minecraft Username *</label>
+            <input type="text" id="mc-user" placeholder="Enter your username">
+
+            <label>Discord Tag *</label>
+            <input type="text" id="discord-tag" placeholder="e.g. username#1234">
+
+            <label>Select Payment Method</label>
+            <div class="method-box" onclick="selectMethod('PP', this)">
+                <b style="color: #3b82f6;">PP</b> &nbsp; PayPal
+            </div>
+            <div class="method-box" onclick="selectMethod('TRX', this)">
+                <b style="color: #ff4b4b;">TRX</b> &nbsp; TRX (Tron TRC20)
+            </div>
+            <div class="method-box" onclick="selectMethod('LTC', this)">
+                <b style="color: #3b82f6;">LTC</b> &nbsp; LTC (Litecoin)
+            </div>
+
+            <button class="primary-btn" style="width: 100%; margin-top: 10px;" onclick="goToStep2()">Continue to Payment</button>
+        </div>
+
+        <div class="modal-content" id="step-2" style="display: none;">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 style="font-weight: 900; margin-bottom: 5px;">Complete Payment</h2>
+            <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 20px;">Send exactly <span id="final-price" style="color: var(--accent-orange); font-weight: 800;"></span> worth of <span id="method-name"></span> to the address below</p>
+
+            <div class="payment-info-box">
+                <label id="addr-label">Address</label>
+                <div class="address-row">
+                    <span id="payment-address">Loading...</span>
+                    <i class="fa-regular fa-copy copy-icon" onclick="copyAddress()"></i>
+                </div>
+            </div>
+
+            <div id="pp-ins" class="alert-box alert-blue" style="display: none;">
+                <i class="fa-solid fa-circle-info"></i>
+                <p>Send payment as "Friends & Family" to avoid fees. Include your Minecraft username in the note.</p>
+            </div>
+
+            <div class="alert-box alert-orange">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p><b>Important:</b> After sending, click the button below to submit. We'll verify and deliver keys within 24 hours.</p>
+            </div>
+
+            <div class="btn-row">
+                <button class="back-modal-btn" onclick="backToStep1()">Back</button>
+                <button class="primary-btn" onclick="submitOrder()">I've Sent Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update this with your actual Webhook URL
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1491190292731134074/qcKCxShisQknNpYo6pYhggrJXU7sx6tmLbx_AqUP3Z8hz65R0kSuKeKTrTBH4BJP6VFd"; 
+        
+        let selectedItem = "";
+        let selectedPrice = "";
+        let selectedMethod = "";
+
+        const addresses = {
+            'PP': 'SOON',
+            'TRX': 'TKGTcvQiFAF3pr1HdJLYrXvZXrCcXVg22J',
+            'LTC': 'LQb6oeUwogDdR7XkbqqgNJCYDzssu5g9pW'
+        };
+
+        function openModal(item, price) {
+            selectedItem = item;
+            selectedPrice = price;
+            document.getElementById('modal-title').innerText = "Purchase " + item;
+            document.getElementById('modal-price').innerText = price;
+            document.getElementById('purchase-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('purchase-modal').style.display = 'none';
+            backToStep1();
+        }
+
+        function selectMethod(method, el) {
+            selectedMethod = method;
+            document.querySelectorAll('.method-box').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function goToStep2() {
+            if(!document.getElementById('mc-user').value || !selectedMethod) return alert("Fill all fields!");
+            
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+            
+            document.getElementById('final-price').innerText = selectedPrice;
+            document.getElementById('method-name').innerText = selectedMethod;
+            document.getElementById('payment-address').innerText = addresses[selectedMethod];
+            document.getElementById('addr-label').innerText = selectedMethod + " Address";
+            
+            document.getElementById('pp-ins').style.display = (selectedMethod === 'PP') ? 'flex' : 'none';
+        }
+
+        function backToStep1() {
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-1').style.display = 'block';
+        }
+
+        function copyAddress() {
+            navigator.clipboard.writeText(document.getElementById('payment-address').innerText);
+            alert("Address copied!");
+        }
+
+        async function submitOrder() {
+            const user = document.getElementById('mc-user').value;
+            const discord = document.getElementById('discord-tag').value;
+
+            const embedData = {
+                embeds: [{
+                    title: "New Purchase Order",
+                    color: 16750849,
+                    fields: [
+                        { name: "Order ID", value: "ORD-" + Math.random().toString(36).substr(2, 9).toUpperCase(), inline: false },
+                        { name: "Item", value: selectedItem, inline: true },
+                        { name: "Price", value: selectedPrice, inline: true },
+                        { name: "Minecraft Username", value: user, inline: true },
+                        { name: "Discord", value: discord, inline: true },
+                        { name: "Payment Method", value: selectedMethod, inline: true }
+                    ],
+                    footer: { text: "PancakeSMP Store • Today" },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(embedData)
+                });
+
+                if(response.ok) {
+                    alert("Success! Your order has been sent for verification.");
+                    closeModal();
+                } else {
+                    alert("Webhook error. Make sure your URL is correct.");
+                }
+            } catch (e) {
+                alert("Connection failed.");
+            }
+        }
+    </script>
+</body>
+</html>
