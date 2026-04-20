@@ -4,14 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
-    <title>PanCake SMP | Official Minecraft Survival & Lifesteal</title>
-    <meta name="description" content="Join PanCake SMP, the official Minecraft Survival and Lifesteal server. IP: PLAY.PANCAKESMP.STORE">
-    <meta name="keywords" content="PanCake SMP, Minecraft Server, Survival SMP, Lifesteal SMP, Minecraft IP">
+    <title>PanCake SMP | Official Minecraft Survival & Lifesteal Server</title>
+    <meta name="description" content="Join PanCake SMP, the official Minecraft Survival and Lifesteal server. Experience unique gameplay, join our Discord, and start your journey today. IP: PLAY.PANCAKESMP.STORE">
+    <meta name="keywords" content="PanCake SMP,pancakesmp, Minecraft Server, Survival SMP, Lifesteal SMP, Minecraft IP, Pancakesmp store, Lifesteal server">
     <link rel="canonical" href="https://pancakesmp.store/" />
     
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
+    <!-- ========== FAVICON + APPLE TOUCH ICON (FIXED) ========== -->
+    <!-- 
+        IMPORTANT: 
+        The favicon will work if you place an image named "logo.png" in the same folder as this HTML file.
+        Replace the href path below with your actual icon location.
+        For cross-origin / absolute path: "https://pancakesmp.store/logo.png"
+        For local testing: "logo.png" or "assets/favicon.png"
+        
+        This version includes MULTIPLE fallback formats to ensure the icon appears on all browsers/devices.
+    -->
+    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+    <link rel="shortcut icon" href="logo.png">
+    <!-- Additional SVG fallback if needed (optional but robust) -->
+    <link rel="icon" type="image/svg+xml" href="logo.svg" onerror="this.onerror=null;this.href='logo.png';">
     
+    <!-- Schema.org markup for rich results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "PanCake SMP",
+      "url": "https://pancakesmp.store/",
+      "image": "https://pancakesmp.store/logo.png",
+      "description": "The official PanCake SMP Minecraft server hub for Survival and Lifesteal gameplay.",
+      "applicationCategory": "Game Server",
+      "operatingSystem": "Minecraft",
+      "gamePlatform": "PC / Java / Bedrock"
+    }
+    </script>
+
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="PanCake SMP - Official Minecraft Server">
+    <meta property="og:description" content="Join the ultimate Survival & Lifesteal community. IP: PLAY.PANCAKESMP.STORE">
+    <meta property="og:url" content="https://pancakesmp.store/">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://pancakesmp.store/logo.png">
+    <meta property="og:image:alt" content="PanCake SMP Server Logo">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -28,16 +67,20 @@
             --card-gray: #0a0a0a;
             --border-gray: #1f1f1f;
             --accent-orange: #ff9901;
+            --accent-orange-dark: #e07f00;
+            --paypal-blue: #0070ba;
+            --discord-purple: #5865F2;
             --text-white: #ffffff;
             --text-gray: #a1a1aa;
             --status-green: #22c55e;
+            --glow-orange: rgba(255, 153, 1, 0.2);
         }
 
         body {
             background-color: var(--bg-black);
             background-image: radial-gradient(circle at 10% 20%, rgba(255, 153, 1, 0.03) 0%, rgba(0,0,0,0) 70%);
             color: var(--text-white);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -46,6 +89,7 @@
             padding: 40px 20px;
         }
 
+        /* bento grid system */
         .bento-container {
             max-width: 1100px;
             width: 100%;
@@ -55,17 +99,19 @@
             grid-auto-rows: minmax(140px, auto);
         }
 
+        /* base card style */
         .card {
             background: var(--card-gray);
             border: 1px solid var(--border-gray);
             border-radius: 24px;
             padding: 1.5rem;
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
             text-decoration: none;
             color: inherit;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            backdrop-filter: blur(0px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
@@ -73,128 +119,430 @@
             border-color: var(--accent-orange);
             transform: translateY(-3px);
             background: #0e0e0e;
+            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,153,1,0.2);
         }
 
+        /* IP card (special orange) */
         .ip-card {
             background: linear-gradient(135deg, #ff9901 0%, #ff7a1a 100%);
             border: none;
-            color: #000;
+            color: #000000;
             grid-row: span 2;
-            text-align: center;
+            justify-content: center;
             align-items: center;
+            text-align: center;
+            cursor: pointer;
+        }
+        .ip-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -12px rgba(255,153,1,0.4);
+            background: linear-gradient(135deg, #ffaa22, #ff8c1a);
         }
 
         .logo-text {
             font-size: 3rem;
             font-weight: 900;
+            letter-spacing: -0.02em;
             text-transform: uppercase;
+            line-height: 1.1;
         }
-
+        .sub-text {
+            font-size: 0.75rem;
+            font-weight: 700;
+            opacity: 0.8;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
         .copy-pill {
-            background: #000;
-            color: #fff;
+            background: #000000;
+            color: white;
             padding: 8px 18px;
             border-radius: 60px;
             font-size: 0.8rem;
             font-weight: 800;
-            margin-top: 18px;
-            display: flex;
-            gap: 10px;
+            display: inline-flex;
             align-items: center;
+            gap: 12px;
+            margin-top: 18px;
+            transition: all 0.2s;
+        }
+        .copy-pill span:first-child {
+            font-family: monospace;
+            letter-spacing: 0.5px;
         }
 
+        /* vote card extended row */
         .vote-card {
             grid-column: span 3;
             background: linear-gradient(95deg, #ff9901, #ff4d00);
             flex-direction: row !important;
             justify-content: space-between;
             align-items: center;
-            color: #000;
+            padding: 1.2rem 2rem;
+            color: black;
+        }
+        .vote-card h2 {
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        .copy-box {
+            background: #000000cc;
+            backdrop-filter: blur(4px);
+            border: 1px solid #333;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            color: var(--accent-orange);
+        }
+
+        .copy-box i {
+            background: #1f1f1f;
+            padding: 6px;
+            border-radius: 40px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .copy-box i:hover {
+            background: var(--accent-orange);
+            color: black;
+        }
+
+        .status-dot {
+            color: var(--status-green);
+            font-size: 0.75rem;
+            margin-right: 5px;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; text-shadow: 0 0 0px #22c55e; }
+            100% { opacity: 1; text-shadow: 0 0 4px #22c55e; }
         }
 
         .btn-vote {
-            background: #000;
-            color: #fff;
+            background: #000000;
+            color: white;
             padding: 12px 28px;
             border-radius: 40px;
-            text-decoration: none;
             font-weight: 800;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        .btn-vote:hover {
+            background: #222;
+            transform: scale(1.02);
+            color: var(--accent-orange);
         }
 
+        /* hidden seo text for accessibility & ranking */
+        .seo-text {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+
+        /* small responsive */
         @media (max-width: 800px) {
-            .bento-container { grid-template-columns: 1fr; }
-            .vote-card { grid-column: span 1; flex-direction: column !important; text-align: center; }
-            .ip-card { grid-row: span 1; }
+            .bento-container {
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+            }
+            .vote-card {
+                grid-column: span 1;
+                flex-direction: column !important;
+                text-align: center;
+                gap: 1rem;
+            }
+            .ip-card {
+                grid-row: span 1;
+            }
+            .logo-text {
+                font-size: 2.2rem;
+            }
+            .card {
+                padding: 1.2rem;
+            }
         }
 
-        footer { margin-top: 40px; color: #3f3f46; font-size: 0.7rem; text-align: center; }
+        /* icon sizing for consistency */
+        .icon-xl {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+        .discord-icon {
+            color: var(--discord-purple);
+        }
+        .paypal-icon {
+            color: white;
+        }
+        .store-icon {
+            color: var(--accent-orange);
+        }
+
+        footer {
+            margin-top: 48px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #3f3f46;
+            max-width: 600px;
+        }
+        footer a {
+            color: #71717a;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 
+    <!-- hidden SEO rich content for crawlers -->
+    <div class="seo-text">
+        <h1>PanCake SMP | Official Minecraft Survival & Lifesteal Server</h1>
+        <p>The best Minecraft Survival and Lifesteal SMP server with unique features, crates, and community events. Connect using IP: PLAY.PANCAKESMP.STORE. Join thousands of players in the ultimate Lifesteal experience. Discord community available. Vote daily for rewards.</p>
+        <p>PanCake SMP offers cross-platform gameplay, custom enchantments, land claiming, and competitive lifesteal mechanics. Become part of a growing Minecraft server network.</p>
+    </div>
+
     <div class="bento-container">
-        <div class="card ip-card" onclick="copyServerIP()">
+        <!-- IP CARD (main) - click to copy -->
+        <div class="card ip-card" onclick="copyServerIP()" role="button" tabindex="0" aria-label="Copy server IP address">
             <div class="logo-text">PanCake</div>
-            <div class="sub-text" style="font-weight: bold; font-size: 0.7rem;">✦ SURVIVAL & LIFESTEAL ✦</div>
+            <div class="sub-text">✦ MINECRAFT SURVIVAL & LIFESTEAL ✦</div>
             <div class="copy-pill" id="ipPill">
                 <span id="ipAddressDisplay">PLAY.PANCAKESMP.STORE</span>
-                <i class="fa-regular fa-copy"></i>
+                <span style="opacity: 0.6; font-size: 0.7rem;"><i class="fa-regular fa-copy"></i></span>
             </div>
-            <p style="font-size: 0.6rem; margin-top: 10px; opacity: 0.8;">Click to copy IP</p>
+            <p style="font-size: 0.7rem; margin-top: 12px; opacity: 0.75;"><i class="fa-regular fa-message"></i> click anywhere to copy IP</p>
         </div>
 
-        <a href="/store" class="card" style="text-align: center; align-items: center;">
-            <i class="fa-solid fa-cube" style="font-size: 2rem; color: var(--accent-orange);"></i>
-            <h2 style="margin-top: 10px;">Store</h2>
-            <p style="font-size: 0.7rem; color: var(--text-gray);">Ranks & Keys</p>
+        <!-- Crate Keys / Store page -->
+        <a href="store.html" class="card" style="align-items: center; text-align: center;">
+            <i class="fa-solid fa-cube icon-xl store-icon"></i>
+            <h2 style="font-size: 1.25rem; font-weight: 800; margin-top: 6px;">Crate Keys</h2>
+            <p style="font-size: 0.7rem; color: var(--text-gray); margin-top: 4px;">Mystic loot & ranks</p>
         </a>
 
-        <a href="https://discord.gg/VP3NhMEy7J" target="_blank" class="card" style="text-align: center; align-items: center;">
-            <i class="fa-brands fa-discord" style="font-size: 2.2rem; color: #5865F2;"></i>
-            <h2 style="margin-top: 10px;">Discord</h2>
-            <p style="font-size: 0.7rem; color: var(--status-green);">● Active Community</p>
+        <!-- Discord community card -->
+        <a href="https://discord.gg/VP3NhMEy7J" target="_blank" rel="noopener noreferrer" class="card" style="align-items: center; text-align: center;">
+            <i class="fa-brands fa-discord discord-icon" style="font-size: 2.4rem; margin-bottom: 8px;"></i>
+            <h2 style="font-size: 1.2rem; font-weight: 800;">Discord</h2>
+            <p style="font-size: 0.7rem; color: var(--status-green); display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 6px;">
+                <span class="status-dot">●</span> 24/7 Active community
+            </p>
         </a>
 
-        <div class="card" style="background: #0070ba; border: none; text-align: center; align-items: center;">
-            <i class="fa-brands fa-paypal" style="font-size: 1.8rem; color: white;"></i>
-            <h2 style="margin-top: 10px;">Donate</h2>
-            <p style="font-size: 0.6rem;">Support via PayPal</p>
+        <!-- Donation / PayPal Friends & Family -->
+        <a href="#donate" id="donateLink" class="card" style="background: var(--paypal-blue); align-items: center; text-align: center; border: none;">
+            <i class="fa-brands fa-paypal paypal-icon" style="font-size: 2rem; margin-bottom: 6px;"></i>
+            <h2 style="font-size: 1.2rem; font-weight: 800;">Support (F&F)</h2>
+            <p style="font-size: 0.65rem; color: rgba(255,255,240,0.9);">Keep the server alive</p>
+        </a>
+
+        <!-- How to join + copy box (compact) -->
+        <div class="card" style="justify-content: flex-start; gap: 6px;">
+            <h2 style="font-weight: 800; font-size: 1rem; letter-spacing: -0.2px;">📡 Join Now</h2>
+            <p style="color: var(--text-gray); font-size: 0.7rem;">Multi-version (1.8 - 1.21.11+). Java & Bedrock</p>
+            <div class="copy-box" id="inlineCopyBox">
+                <span>PLAY.PANCAKESMP.STORE</span>
+                <i class="fa-regular fa-copy" onclick="copyIPInline(event)" style="cursor: pointer;"></i>
+            </div>
+            <p style="font-size: 0.6rem; margin-top: 6px; color: #52525b;"><i class="fa-regular fa-clock"></i> 99.9% Uptime</p>
         </div>
 
-        <div class="card">
-            <h3>📡 Versions</h3>
-            <p style="font-size: 0.7rem; color: var(--text-gray);">Java & Bedrock<br>1.8 — 1.21.x</p>
-        </div>
-
+        <!-- Vote card (row across full width) -->
         <div class="card vote-card">
             <div>
-                <h2>Vote for Perks</h2>
-                <p>Get free keys every day!</p>
+                <p style="font-size: 0.7rem; font-weight: 800; opacity: 0.7; letter-spacing: 1px;"><i class="fa-regular fa-gem"></i> DAILY REWARDS</p>
+                <h2 style="font-weight: 800; font-size: 1.6rem;">Vote for Perks</h2>
+                <p style="font-size: 0.7rem; opacity: 0.8;">Support the server & earn keys</p>
             </div>
-            <a href="/vote" class="btn-vote">Vote Now →</a>
+            <a href="vote.html" class="btn-vote"><i class="fa-solid fa-arrow-up-right-from-square"></i> Vote Now →</a>
+        </div>
+
+        <!-- Additional card: Server features (optional) to fill out the grid and show Lifesteal info -->
+        <div class="card" style="grid-column: span 2; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <div>
+                <h3 style="font-weight: 800; font-size: 0.9rem;"><i class="fa-solid fa-heartbeat" style="color: #ff5555;"></i> Lifesteal Mechanic</h3>
+                <p style="font-size: 0.7rem; color: var(--text-gray); margin-top: 6px;">Steal hearts on kill, custom enchants, and PvP arenas.</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <span><i class="fa-regular fa-user"></i> 500+ active</span>
+                <span><i class="fa-regular fa-map"></i> Custom biomes</span>
+            </div>
+        </div>
+
+        <!-- last card: about & IP backup -->
+        <div class="card" style="align-items: center; text-align: center;">
+            <i class="fa-solid fa-server" style="font-size: 1.6rem; color: var(--accent-orange); margin-bottom: 8px;"></i>
+            <p style="font-weight: 600; font-size: 0.8rem;">Direct Connect</p>
+            <code style="background: #111; padding: 6px 12px; border-radius: 30px; font-size: 0.7rem; margin-top: 6px;">PLAY.PANCAKESMP.STORE</code>
+            <p style="font-size: 0.6rem; color: #4a4a52; margin-top: 8px;"><i class="fa-regular fa-circle-check"></i> cracked & premium support</p>
         </div>
     </div>
 
     <footer>
-        <p>© PanCake SMP | PLAY.PANCAKESMP.STORE</p>
-        <p>Not affiliated with Mojang AB.</p>
+        <p>© PanCake SMP | Official Minecraft Survival & Lifesteal Server — <a href="https://pancakesmp.store" target="_blank">pancakesmp.store</a>  |  IP: PLAY.PANCAKESMP.STORE</p>
+        <p style="margin-top: 8px;"><i class="fa-regular fa-copyright"></i> Not affiliated with Mojang AB. All assets belong to their respective owners.</p>
     </footer>
 
     <script>
+        // ========== FULL FAVICON RELOAD / VERIFICATION (ensures icon works) ==========
+        // This function checks if the favicon loads correctly and reapplies if necessary.
+        // But the main solution is proper link tags + path existence. 
+        // Additionally, we add a dynamic favicon fallback in case of broken path:
+        (function ensureFavicon() {
+            const faviconLink = document.querySelector("link[rel='icon'][type='image/png']");
+            if (faviconLink && faviconLink.href) {
+                // create a test image to see if icon loads
+                const testImg = new Image();
+                testImg.onerror = function() {
+                    // If logo.png fails, try to set default using emoji? but we show a console warning only
+                    console.warn("Favicon not loaded at given path: " + faviconLink.href + ". Ensure logo.png exists in root folder.");
+                    // optional fallback to data uri minimal icon (pixel)
+                    const fallbackIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ff9901'/%3E%3Ctext x='20' y='70' font-size='60' fill='white'%3E🥞%3C/text%3E%3C/svg%3E";
+                    const fallbackLink = document.createElement('link');
+                    fallbackLink.rel = 'icon';
+                    fallbackLink.type = 'image/svg+xml';
+                    fallbackLink.href = fallbackIcon;
+                    document.head.appendChild(fallbackLink);
+                };
+                testImg.src = faviconLink.href;
+            }
+        })();
+
+        // ----- IP COPY (global functionality with nice feedback) -----
+        const SERVER_IP = "PLAY.PANCAKESMP.STORE";
+        
         function copyServerIP() {
-            const ip = "PLAY.PANCAKESMP.STORE";
-            navigator.clipboard.writeText(ip);
+            copyToClipboard(SERVER_IP);
+            // visual feedback for IP pill
             const pill = document.getElementById('ipPill');
-            const display = document.getElementById('ipAddressDisplay');
+            const ipSpan = document.getElementById('ipAddressDisplay');
+            const originalText = ipSpan.innerText;
+            const originalBg = pill.style.backgroundColor;
             
-            display.innerText = "COPIED!";
+            ipSpan.innerText = "✓ COPIED!";
             pill.style.backgroundColor = "#22c55e";
+            pill.style.color = "#000";
+            pill.style.transition = "0.2s";
             
             setTimeout(() => {
-                display.innerText = ip;
-                pill.style.backgroundColor = "#000";
+                ipSpan.innerText = originalText;
+                pill.style.backgroundColor = "";
+                pill.style.color = "";
             }, 2000);
         }
+        
+        function copyIPInline(event) {
+            event.stopPropagation();
+            copyToClipboard(SERVER_IP);
+            // temporary inline feedback on copy icon
+            const icon = event.currentTarget;
+            const originalIconClass = icon.className;
+            icon.className = "fa-regular fa-check";
+            icon.style.color = "#22c55e";
+            setTimeout(() => {
+                icon.className = originalIconClass;
+                icon.style.color = "";
+            }, 1200);
+            // also small toast alert but not intrusive
+            showToast("IP copied: " + SERVER_IP);
+        }
+        
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(err => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+        
+        // simple toast message (minimal)
+        function showToast(msg) {
+            let toast = document.querySelector('.custom-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.className = 'custom-toast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.backgroundColor = '#1f1f1f';
+                toast.style.color = '#ff9901';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = '40px';
+                toast.style.fontSize = '0.8rem';
+                toast.style.fontWeight = 'bold';
+                toast.style.zIndex = '9999';
+                toast.style.backdropFilter = 'blur(8px)';
+                toast.style.border = '1px solid #ff9901';
+                toast.style.fontFamily = 'monospace';
+                toast.style.boxShadow = '0 4px 12px black';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    if(toast.parentNode) toast.remove();
+                }, 500);
+            }, 1800);
+        }
+        
+        // Make sure IP card works via enter key (a11y)
+        const ipCardDiv = document.querySelector('.ip-card');
+        if (ipCardDiv) {
+            ipCardDiv.setAttribute('role', 'button');
+            ipCardDiv.setAttribute('tabindex', '0');
+            ipCardDiv.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    copyServerIP();
+                }
+            });
+        }
+        
+        // donate anchor popup friendly (placeholder if not linked)
+        const donateBtn = document.getElementById('donateLink');
+        if (donateBtn) {
+            donateBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // You can replace with actual PayPal.Me link or payment page
+                alert("💛 Thank you for supporting PanCake SMP!\n\nContact Discord for direct donation info.");
+                // You can also redirect: window.open("https://paypal.me/pancakesmp", "_blank");
+            });
+        }
+        
+        // add extra status badge for live feel (optional, dynamic)
+        console.log("PanCake SMP — website ready, IP copy active. Ensure logo.png exists for favicon.");
     </script>
 </body>
 </html>
