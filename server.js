@@ -4,7 +4,6 @@ const stripe = require('stripe')('sk_test_51Tf8eRCr0FNHIRbFSZZIuJJ3KDJZnh752LVl0
 
 const app = express();
 
-// Allow requests from any origin (GitHub Pages site)
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
@@ -13,7 +12,7 @@ app.post('/create-payment-intent', async (req, res) => {
         const { amount, item, username, discord } = req.body;
 
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: Math.round(amount * 100), // Stripe uses cents
+            amount: Math.round(amount * 100),
             currency: 'usd',
             automatic_payment_methods: { enabled: true },
             description: `Item: ${item} | User: ${username} | Discord: ${discord}`
@@ -26,7 +25,6 @@ app.post('/create-payment-intent', async (req, res) => {
     }
 });
 
-// Use the dynamic port assigned by Render or default to 3000
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
