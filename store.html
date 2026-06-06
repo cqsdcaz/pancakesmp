@@ -314,7 +314,7 @@
         function getGooglePaymentsClient() {
             if (paymentsClient === null) {
                 // Switch 'TEST' to 'PRODUCTION' once console review finishes
-                paymentsClient = new google.payments.api.PaymentsClient({ environment: 'PRODUCTION' });
+                paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' });
             }
             return paymentsClient;
         }
