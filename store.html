@@ -3,277 +3,774 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store | PanCake SMP</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>VectorGG Movie Hub - Watch Trailers</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
-            --bg-black: #050505;
-            --card-gray: #0a0a0a;
-            --border-gray: #1a1a1a;
-            --accent-orange: #ff9901;
-            --text-white: #ffffff;
-            --text-gray: #71717a;
-            --success-green: #22c55e;
+            --bg: #0a0c10;
+            --surface: #1a1d24;
+            --card: #22262f;
+            --text: #ffffff;
+            --text-secondary: #b3b9c5;
+            --accent: #e50914;
+            --accent-hover: #f81d2c;
+            --gradient: linear-gradient(135deg, #e50914 0%, #b20710 100%);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair !important; }
-
-        body { 
-            background-color: var(--bg-black); 
-            color: var(--text-white); 
-            font-family: 'Inter', sans-serif;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 40px 20px;
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            line-height: 1.5;
         }
 
-        .container { max-width: 1000px; width: 100%; }
-
-        .back-btn { text-decoration: none; color: var(--text-gray); font-weight: 700; font-size: 13px; margin-bottom: 30px; display: inline-block; transition: 0.2s; }
-        .back-btn:hover { color: var(--accent-orange); }
-
-        .header { margin-bottom: 30px; }
-        .header h1 { font-size: 32px; font-weight: 900; }
-        .header p { color: var(--text-gray); font-size: 14px; margin-top: 5px; }
-
-        .store-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 16px; 
+        header {
+            background: rgba(10, 12, 16, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
-        .card {
-            background: var(--card-gray);
-            border: 1px solid var(--border-gray);
-            border-radius: 12px;
-            padding: 24px;
-            transition: 0.2s ease;
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: white;
+            background: none;
+        }
+
+        .search-wrapper {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            max-width: 500px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 40px;
+            border: 1px solid #333a44;
+            background: #11151c;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.3);
+        }
+
+        button {
+            padding: 12px 24px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
             cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            filter: brightness(1.05);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            padding: 20px 32px 0 32px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border-radius: 40px;
+            padding: 8px 24px;
+            background: var(--surface);
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 12px rgba(229,9,20,0.3);
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 28px;
+            padding: 32px;
+        }
+
+        .movie-card {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.5);
+            border-color: rgba(229,9,20,0.4);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 310px;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .movie-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .info {
+            padding: 14px;
+        }
+
+        .info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #ffc107;
+            font-size: 0.85rem;
+        }
+
+        .rating span {
+            color: var(--text-secondary);
+        }
+
+        #movieModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 28px;
+            width: 90%;
+            max-width: 950px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .close-btn {
+            cursor: pointer;
+            position: sticky;
+            float: right;
+            right: 20px;
+            top: 16px;
+            font-size: 32px;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            z-index: 20;
+            margin: 12px;
+        }
+
+        .close-btn:hover {
+            background: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-detail-content {
+            padding: 20px 28px 28px 28px;
+            clear: both;
+        }
+
+        .modal-header {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .modal-poster {
+            width: 180px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            object-fit: cover;
+        }
+
+        .modal-info {
+            flex: 1;
+        }
+
+        .modal-info h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .trailer-section {
+            margin-top: 28px;
+            background: #0f1117;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(229,9,20,0.3);
+        }
+
+        .trailer-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .trailer-frame {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
             position: relative;
         }
-        .card:hover { border-color: #333; transform: translateY(-3px); }
-        .card.popular { border-color: var(--accent-orange); background: rgba(255,153,1,0.02); }
 
-        .badge { 
-            background: var(--accent-orange); color: #000; 
-            font-size: 10px; font-weight: 900; padding: 3px 8px; 
-            border-radius: 4px; display: inline-block; margin-bottom: 10px;
+        .trailer-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
-        .item-title { font-size: 18px; font-weight: 800; }
-        .item-desc { font-size: 12px; color: var(--text-gray); margin-bottom: 20px; }
-        .price { font-size: 20px; font-weight: 900; }
-        .price span { font-size: 11px; color: var(--text-gray); }
+        .trailer-error {
+            background: #2a1a1c;
+            padding: 40px;
+            text-align: center;
+            border-radius: 16px;
+            color: #ff9999;
+        }
 
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1000; display:none; align-items:center; justify-content:center; }
-        .modal-content { background:#0d0d0d; border:1px solid #222; border-radius:16px; width:95%; max-width:440px; padding:32px; position:relative; }
-        .close-btn { position:absolute; top:20px; right:20px; color:#555; font-size:20px; cursor:pointer; }
-        
-        label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: #eee; }
-        input { width: 100%; background: #151515; border: 1px solid #252525; padding: 12px; border-radius: 8px; color: #fff; margin-bottom: 20px; outline: none; transition: 0.2s; }
-        input:focus { border-color: var(--accent-orange); }
+        .watch-trailer-btn {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            margin-top: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border-radius: 50px;
+        }
 
-        .method-box { border: 1px solid #222; padding: 14px; border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
-        .method-box:hover { background: #151515; }
-        .method-box.selected { border-color: var(--accent-orange); background: rgba(255,153,1,0.05); }
-        
-        .payment-info-box { background: #111; border: 1px solid #222; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .address-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; word-break: break-all; font-family: monospace; font-size: 12px; }
-        .copy-icon { color: var(--text-gray); cursor: pointer; padding: 5px; }
-        
-        .alert-box { border-radius: 8px; padding: 12px; font-size: 12px; margin-bottom: 15px; line-height: 1.4; display: flex; gap: 10px; }
-        .alert-blue { background: rgba(59, 130, 246, 0.1); border: 1px solid #1e3a8a; color: #93c5fd; }
-        .alert-orange { background: rgba(255, 153, 1, 0.1); border: 1px solid #7c4a03; color: #fdba74; }
+        .movie-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+            color: var(--text-secondary);
+        }
 
-        .btn-row { display: flex; gap: 10px; margin-top: 20px; }
-        .primary-btn { flex: 2; background: var(--accent-orange); color: #000; border: none; padding: 14px; border-radius: 10px; font-weight: 800; cursor: pointer; }
-        .back-modal-btn { flex: 1; background: #000; color: #fff; border: 1px solid #222; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .badge {
+            background: rgba(229,9,20,0.2);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
 
-        @media (max-width: 768px) { .store-grid { grid-template-columns: 1fr; } }
+        .loading-spinner {
+            text-align: center;
+            padding: 60px;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .alt-trailer-message {
+            background: #1a1f2a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .youtube-link {
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            background: rgba(229,9,20,0.15);
+            padding: 10px 20px;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .youtube-link:hover {
+            background: rgba(229,9,20,0.3);
+        }
+
+        @media (max-width: 640px) {
+            .movie-grid { gap: 16px; padding: 20px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .movie-card img { height: 220px; }
+            .modal-header { flex-direction: column; align-items: center; text-align: center; }
+            .modal-poster { width: 140px; }
+            .search-wrapper { max-width: 100%; }
+            header { flex-direction: column; align-items: stretch; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> BACK TO HOME</a>
-        
-        <div class="header">
-            <h1>Server Crate Keys</h1>
-            <p>Enhance your journey with exclusive rewards</p>
-        </div>
-
-        <div class="store-grid">
-            <div class="card" onclick="openModal('Spawners Key', '$4.00')">
-                <h3 class="item-title">Spawners Key</h3>
-                <p class="item-desc">Unlock mob spawners</p>
-                <div class="price">$4.00 <span>USD</span></div>
-            </div>
-
-            <div class="card popular" onclick="openModal('Legendary Key', '$6.00')">
-                <div class="badge">BEST VALUE</div>
-                <h3 class="item-title">Legendary Key</h3>
-                <p class="item-desc">Highest tier rewards</p>
-                <div class="price" style="color: var(--accent-orange);">$6.00 <span>USD</span></div>
-            </div>
-
-            <div class="card" onclick="openModal('Epic Key', '$3.00')">
-                <h3 class="item-title">Epic Key</h3>
-                <p class="item-desc">High tier crate rewards</p>
-                <div class="price">$3.00 <span>USD</span></div>
-            </div>
-        </div>
+<header>
+    <div class="logo">Vector<span>GG</span> Movie Hub</div>
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Search any movie... (e.g., Inception, Interstellar)">
+        <button id="searchBtn">Search</button>
     </div>
+</header>
 
-    <div id="purchase-modal" class="modal-overlay">
-        <div class="modal-content" id="step-1">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modal-title" style="font-weight: 900; margin-bottom: 5px;">Purchase</h2>
-            <p style="font-weight: 800; margin-bottom: 25px;">Total: <span id="modal-price" style="color: var(--accent-orange);"></span></p>
+<div class="tabs">
+    <button class="tab-btn active" data-tab="trending">🔥 Trending Now</button>
+    <button class="tab-btn" data-tab="popular">⭐ Popular Movies</button>
+    <button class="tab-btn" data-tab="toprated">🏆 Top Rated</button>
+</div>
 
-            <label>Minecraft Username *</label>
-            <input type="text" id="mc-user" placeholder="Enter your username">
+<main id="movieContainer" class="movie-grid"></main>
 
-            <label>Discord Tag *</label>
-            <input type="text" id="discord-tag" placeholder="e.g. username#1234">
-
-            <label>Select Payment Method</label>
-            <div class="method-box" onclick="selectMethod('PP', this)">
-                <b style="color: #3b82f6;">PP</b> &nbsp; PayPal
-            </div>
-            <div class="method-box" onclick="selectMethod('TRX', this)">
-                <b style="color: #ff4b4b;">TRX</b> &nbsp; TRX (Tron TRC20)
-            </div>
-            <div class="method-box" onclick="selectMethod('LTC', this)">
-                <b style="color: #3b82f6;">LTC</b> &nbsp; LTC (Litecoin)
-            </div>
-
-            <button class="primary-btn" style="width: 100%; margin-top: 10px;" onclick="goToStep2()">Continue to Payment</button>
-        </div>
-
-        <div class="modal-content" id="step-2" style="display: none;">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 style="font-weight: 900; margin-bottom: 5px;">Complete Payment</h2>
-            <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 20px;">Send exactly <span id="final-price" style="color: var(--accent-orange); font-weight: 800;"></span> worth of <span id="method-name"></span> to the address below</p>
-
-            <div class="payment-info-box">
-                <label id="addr-label">Address</label>
-                <div class="address-row">
-                    <span id="payment-address">Loading...</span>
-                    <i class="fa-regular fa-copy copy-icon" onclick="copyAddress()"></i>
-                </div>
-            </div>
-
-            <div id="pp-ins" class="alert-box alert-blue" style="display: none;">
-                <i class="fa-solid fa-circle-info"></i>
-                <p>Send payment as "Friends & Family" to avoid fees. Include your Minecraft username in the note.</p>
-            </div>
-
-            <div class="alert-box alert-orange">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <p><b>Important:</b> After sending, click the button below to submit. We'll verify and deliver keys within 24 hours.</p>
-            </div>
-
-            <div class="btn-row">
-                <button class="back-modal-btn" onclick="backToStep1()">Back</button>
-                <button class="primary-btn" onclick="submitOrder()">I've Sent Payment</button>
-            </div>
-        </div>
+<div id="movieModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modalDetails"></div>
     </div>
+</div>
 
-    <script>
-        // Update this with your actual Webhook URL
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/1491190292731134074/qcKCxShisQknNpYo6pYhggrJXU7sx6tmLbx_AqUP3Z8hz65R0kSuKeKTrTBH4BJP6VFd"; 
+<script>
+    const API_KEY = '339797286173982f402ff9a3d4b9333e';
+    const BASE_URL = 'https://api.themoviedb.org/3';
+    const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const container = document.getElementById('movieContainer');
+    const modal = document.getElementById('movieModal');
+    const modalDetails = document.getElementById('modalDetails');
+
+    let currentTab = 'trending';
+
+    // Fetch movies by category (default movies on start)
+    async function fetchMoviesByCategory(category, query = null) {
+        container.innerHTML = `<div class="loading-spinner"><div>🎬 Loading amazing movies...</div></div>`;
         
-        let selectedItem = "";
-        let selectedPrice = "";
-        let selectedMethod = "";
-
-        const addresses = {
-            'PP': 'nekkachemerouane5@gmail.com',
-            'TRX': 'TKGTcvQiFAF3pr1HdJLYrXvZXrCcXVg22J',
-            'LTC': 'LQb6oeUwogDdR7XkbqqgNJCYDzssu5g9pW'
-        };
-
-        function openModal(item, price) {
-            selectedItem = item;
-            selectedPrice = price;
-            document.getElementById('modal-title').innerText = "Purchase " + item;
-            document.getElementById('modal-price').innerText = price;
-            document.getElementById('purchase-modal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('purchase-modal').style.display = 'none';
-            backToStep1();
-        }
-
-        function selectMethod(method, el) {
-            selectedMethod = method;
-            document.querySelectorAll('.method-box').forEach(b => b.classList.remove('selected'));
-            el.classList.add('selected');
-        }
-
-        function goToStep2() {
-            if(!document.getElementById('mc-user').value || !selectedMethod) return alert("Fill all fields!");
-            
-            document.getElementById('step-1').style.display = 'none';
-            document.getElementById('step-2').style.display = 'block';
-            
-            document.getElementById('final-price').innerText = selectedPrice;
-            document.getElementById('method-name').innerText = selectedMethod;
-            document.getElementById('payment-address').innerText = addresses[selectedMethod];
-            document.getElementById('addr-label').innerText = selectedMethod + " Address";
-            
-            document.getElementById('pp-ins').style.display = (selectedMethod === 'PP') ? 'flex' : 'none';
-        }
-
-        function backToStep1() {
-            document.getElementById('step-2').style.display = 'none';
-            document.getElementById('step-1').style.display = 'block';
-        }
-
-        function copyAddress() {
-            navigator.clipboard.writeText(document.getElementById('payment-address').innerText);
-            alert("Address copied!");
-        }
-
-        async function submitOrder() {
-            const user = document.getElementById('mc-user').value;
-            const discord = document.getElementById('discord-tag').value;
-
-            const embedData = {
-                embeds: [{
-                    title: "New Purchase Order",
-                    color: 16750849,
-                    fields: [
-                        { name: "Order ID", value: "ORD-" + Math.random().toString(36).substr(2, 9).toUpperCase(), inline: false },
-                        { name: "Item", value: selectedItem, inline: true },
-                        { name: "Price", value: selectedPrice, inline: true },
-                        { name: "Minecraft Username", value: user, inline: true },
-                        { name: "Discord", value: discord, inline: true },
-                        { name: "Payment Method", value: selectedMethod, inline: true }
-                    ],
-                    footer: { text: "PancakeSMP Store • Today" },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(embedData)
-                });
-
-                if(response.ok) {
-                    alert("Success! Your order has been sent for verification.");
-                    closeModal();
-                } else {
-                    alert("Webhook error. Make sure your URL is correct.");
-                }
-            } catch (e) {
-                alert("Connection failed.");
+        let url = '';
+        if (query) {
+            url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`;
+        } else {
+            if (category === 'trending') {
+                url = `${BASE_URL}/trending/movie/week?api_key=${API_KEY}`;
+            } else if (category === 'popular') {
+                url = `${BASE_URL}/movie/popular?api_key=${API_KEY}`;
+            } else if (category === 'toprated') {
+                url = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}`;
             }
         }
-    </script>
+
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            const movies = data.results || [];
+
+            if (movies.length === 0) {
+                container.innerHTML = `<div class="empty-state">✨ No movies found. Try a different search!</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            let displayed = 0;
+            movies.forEach(movie => {
+                if (!movie.poster_path) return;
+                displayed++;
+                const div = document.createElement('div');
+                div.className = 'movie-card';
+                div.onclick = () => showMovieDetails(movie.id);
+                div.innerHTML = `
+                    <img src="${IMAGE_URL}${movie.poster_path}" alt="${movie.title}" loading="lazy">
+                    <div class="info">
+                        <h3>${escapeHtml(movie.title)}</h3>
+                        <div class="rating">⭐ ${movie.vote_average?.toFixed(1) || '?'}<span>/10</span></div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            if (displayed === 0) {
+                container.innerHTML = `<div class="empty-state">😢 No posters available for these movies.</div>`;
+            }
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = `<div class="empty-state">❌ Network error. Please check your connection.</div>`;
+        }
+    }
+
+    // Helper to escape HTML
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Search handler
+    async function searchMovies() {
+        const query = searchInput.value.trim();
+        if (!query) {
+            fetchMoviesByCategory(currentTab);
+            return;
+        }
+        currentTab = null;
+        container.innerHTML = '<div class="loading-spinner">🔍 Searching cinema database...</div>';
+        try {
+            const res = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
+            const data = await res.json();
+            const movies = data.results || [];
+            if (movies.length === 0) {
+                container.innerHTML = `<div class="empty-state">😔 No results for "${escapeHtml(query)}". Try another title.</div>`;
+                return;
+            }
+            container.innerHTML = '';
+            movies.forEach(movie => {
+                if (!movie.poster_path) return;
+                const div = document.createElement('div');
+                div.className = 'movie-card';
+                div.onclick = () => showMovieDetails(movie.id);
+                div.innerHTML = `
+                    <img src="${IMAGE_URL}${movie.poster_path}" alt="${movie.title}" loading="lazy">
+                    <div class="info">
+                        <h3>${escapeHtml(movie.title)}</h3>
+                        <div class="rating">⭐ ${movie.vote_average?.toFixed(1) || '?'}<span>/10</span></div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        } catch (e) {
+            container.innerHTML = '<div class="empty-state">⚠️ Failed to load search results.</div>';
+        }
+    }
+
+    // FIXED: Better trailer fetching with multiple fallback methods
+    async function getTrailerKey(movieId) {
+        try {
+            const res = await fetch(`${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`);
+            const data = await res.json();
+            
+            // Prioritize official trailers from YouTube
+            const videos = data.results || [];
+            
+            // Try to find official trailer
+            let trailer = videos.find(v => v.type === 'Trailer' && v.site === 'YouTube' && (v.name?.toLowerCase().includes('official') || v.official === true));
+            if (!trailer) {
+                trailer = videos.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+            }
+            if (!trailer) {
+                trailer = videos.find(v => (v.type === 'Teaser' || v.type === 'Clip') && v.site === 'YouTube');
+            }
+            if (!trailer && videos.length > 0) {
+                trailer = videos.find(v => v.site === 'YouTube');
+            }
+            
+            return trailer ? trailer.key : null;
+        } catch (err) {
+            console.warn("Trailer fetch error:", err);
+            return null;
+        }
+    }
+
+    // Alternative: Open YouTube in a new tab if embed fails
+    function createYouTubeEmbed(key, retryCount = 0) {
+        // Multiple embed strategies to avoid configuration errors
+        const origins = [
+            `https://www.youtube-nocookie.com/embed/${key}?autoplay=0&rel=0&modestbranding=1&enablejsapi=1`,
+            `https://www.youtube.com/embed/${key}?autoplay=0&rel=0&origin=${window.location.origin}`,
+            `https://www.youtube.com/embed/${key}?autoplay=0`
+        ];
+        
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.src = origins[retryCount % origins.length];
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        
+        return iframe;
+    }
+
+    async function showMovieDetails(movieId) {
+        modalDetails.innerHTML = `<div class="modal-detail-content" style="text-align:center; padding:40px;">🎬 Loading movie details & finding trailer...</div>`;
+        modal.style.display = 'flex';
+        
+        try {
+            const movieRes = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+            const movie = await movieRes.json();
+            
+            // Get trailer key
+            const trailerKey = await getTrailerKey(movieId);
+            
+            const posterHtml = movie.poster_path ? 
+                `<img class="modal-poster" src="${IMAGE_URL}${movie.poster_path}" alt="${escapeHtml(movie.title)}">` : 
+                `<div style="width:180px; background:#2a2f3a; border-radius:16px; display:flex; align-items:center; justify-content:center; min-height:270px;">🎞️ No Poster</div>`;
+            
+            const genres = movie.genres ? movie.genres.map(g => g.name).join(', ') : 'N/A';
+            const runtime = movie.runtime ? `${movie.runtime} min` : 'Unknown';
+            const releaseDate = movie.release_date ? movie.release_date.split('-')[0] : 'TBA';
+            
+            let trailerHTML = '';
+            
+            if (trailerKey) {
+                // Create a container with manual retry option
+                const trailerContainerId = `trailer-${Date.now()}`;
+                trailerHTML = `
+                    <div class="trailer-section">
+                        <div class="trailer-title">
+                            🎥 <strong>Official Trailer</strong>
+                        </div>
+                        <div id="${trailerContainerId}" class="trailer-frame">
+                            <div style="display:flex; align-items:center; justify-content:center; height:100%; background:#000;">
+                                <div style="text-align:center;">
+                                    <div class="loading-spinner" style="padding:20px;">Loading trailer...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:12px; justify-content:center; margin-top:16px; flex-wrap:wrap;">
+                            <button class="watch-trailer-btn" onclick="window.open('https://www.youtube.com/watch?v=${trailerKey}', '_blank')">
+                                ▶️ Watch on YouTube (New Tab)
+                            </button>
+                            <button class="watch-trailer-btn" onclick="retryTrailer('${trailerContainerId}', '${trailerKey}')" style="background:#444;">
+                                🔄 Reload Trailer
+                            </button>
+                        </div>
+                        <p style="font-size:0.8rem; color:#aaa; text-align:center; margin-top:12px;">
+                            💡 If trailer doesn't load, click "Watch on YouTube" to view directly
+                        </p>
+                    </div>
+                `;
+                
+                // Use setTimeout to ensure DOM is ready
+                setTimeout(() => {
+                    const containerEl = document.getElementById(trailerContainerId);
+                    if (containerEl) {
+                        try {
+                            // Clear and add iframe
+                            containerEl.innerHTML = '';
+                            const iframe = createYouTubeEmbed(trailerKey, 0);
+                            containerEl.appendChild(iframe);
+                            
+                            // Handle iframe load error
+                            iframe.onerror = () => {
+                                containerEl.innerHTML = `
+                                    <div style="display:flex; align-items:center; justify-content:center; height:100%; background:#1a1a1a; flex-direction:column; gap:15px;">
+                                        <span>⚠️ Trailer failed to load</span>
+                                        <button onclick="window.open('https://www.youtube.com/watch?v=${trailerKey}', '_blank')" style="padding:8px 16px; background:#e50914; border:none; border-radius:8px; color:white; cursor:pointer;">
+                                            Watch on YouTube →
+                                        </button>
+                                    </div>
+                                `;
+                            };
+                        } catch(e) {
+                            console.error("iframe creation error", e);
+                            containerEl.innerHTML = `<div class="trailer-error">⚠️ Unable to load video player. <a href="https://www.youtube.com/watch?v=${trailerKey}" target="_blank" style="color:#e50914;">Click here to watch on YouTube</a></div>`;
+                        }
+                    }
+                }, 50);
+            } else {
+                trailerHTML = `
+                    <div class="trailer-section">
+                        <div class="trailer-title">
+                            🎬 Trailer Unavailable
+                        </div>
+                        <div class="alt-trailer-message">
+                            😢 No official trailer found for "${escapeHtml(movie.title)}".<br><br>
+                            You can still enjoy these movie details!
+                            <div class="youtube-link" onclick="searchYouTubeTrailer('${escapeHtml(movie.title)}')">
+                                🔍 Search "${escapeHtml(movie.title)}" trailer on YouTube
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            modalDetails.innerHTML = `
+                <div class="modal-detail-content">
+                    <div class="modal-header">
+                        ${posterHtml}
+                        <div class="modal-info">
+                            <h2>${escapeHtml(movie.title)} <span class="badge">${releaseDate}</span></h2>
+                            <div class="movie-meta">
+                                <span>⭐ ${movie.vote_average?.toFixed(1) || '?'}/10 (${movie.vote_count?.toLocaleString() || 0} votes)</span>
+                                <span>🎬 ${runtime}</span>
+                                <span>🎭 ${escapeHtml(genres)}</span>
+                            </div>
+                            <p style="margin-top: 12px; line-height:1.6;">${escapeHtml(movie.overview) || "No overview available."}</p>
+                        </div>
+                    </div>
+                    ${trailerHTML}
+                    <div style="margin-top: 20px; text-align:center; font-size:0.75rem; color:#666; border-top:1px solid #2a2f3a; padding-top:16px;">
+                        🍿 Data provided by TMDb
+                    </div>
+                </div>
+            `;
+        } catch (err) {
+            console.error(err);
+            modalDetails.innerHTML = `<div class="modal-detail-content" style="padding:30px;">❌ Failed to load movie details. Please try again.</div>`;
+        }
+    }
+
+    // Global function for retry
+    window.retryTrailer = function(containerId, trailerKey) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = '';
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.src = `https://www.youtube.com/embed/${trailerKey}?autoplay=0&rel=0`;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            container.appendChild(iframe);
+        }
+    };
+
+    // Fallback search on YouTube
+    window.searchYouTubeTrailer = function(movieTitle) {
+        const searchQuery = encodeURIComponent(`${movieTitle} official trailer`);
+        window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+    };
+
+    function closeModal() {
+        modal.style.display = 'none';
+        modalDetails.innerHTML = '';
+    }
+
+    function setActiveTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            if (btn.getAttribute('data-tab') === tabId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    function loadTabContent(tab) {
+        currentTab = tab;
+        searchInput.value = '';
+        if (tab === 'trending') {
+            fetchMoviesByCategory('trending');
+        } else if (tab === 'popular') {
+            fetchMoviesByCategory('popular');
+        } else if (tab === 'toprated') {
+            fetchMoviesByCategory('toprated');
+        }
+    }
+
+    // Tab event listeners
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const tabValue = btn.getAttribute('data-tab');
+            setActiveTab(tabValue);
+            loadTabContent(tabValue);
+        });
+    });
+
+    searchBtn.onclick = () => {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        currentTab = null;
+        searchMovies();
+    };
+    
+    searchInput.onkeyup = (e) => { 
+        if(e.key === 'Enter') {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            currentTab = null;
+            searchMovies();
+        }
+    };
+
+    // Initialize with trending movies
+    window.onload = () => {
+        loadTabContent('trending');
+    };
+
+    window.onclick = (e) => { 
+        if(e.target == modal) closeModal();
+    };
+</script>
 </body>
 </html>
