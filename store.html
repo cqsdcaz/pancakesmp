@@ -386,7 +386,31 @@ input:focus{
 <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
 
 <script>
+// Add this at the very top of your <script>
+const BACKEND_URL = "https://pancakesmp.onrender.com";
 
+// Use this function when the user clicks the "Pay" button
+async function initiateStripePayment() {
+    const stripe = Stripe("pk_test_YOUR_STRIPE_PUBLIC_KEY"); // Put your PUBLIC key here!
+
+    const response = await fetch(`${BACKEND_URL}/create-payment-intent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+            amount: selectedPrice,
+            item: selectedItem,
+            username: document.getElementById('mcuser').value,
+            discord: document.getElementById('discord').value
+        })
+    });
+
+    const { clientSecret } = await response.json();
+    
+    // This opens the Stripe payment element
+    const result = await stripe.confirmPayment({
+        // ... (you will need to implement the Stripe Elements UI here)
+    });
+}
 let selectedItem = "";
 let selectedPrice = 0;
 let selectedMethod = "";
