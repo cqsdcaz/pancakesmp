@@ -1,427 +1,553 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store | PanCake SMP</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-black: #050505;
-            --card-gray: #0a0a0a;
-            --border-gray: #1a1a1a;
-            --accent-orange: #ff9901;
-            --text-white: #ffffff;
-            --text-gray: #71717a;
-            --success-green: #22c55e;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        * { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair !important; }
+<title>PanCake SMP Store</title>
 
-        body { 
-            background-color: var(--bg-black); 
-            color: var(--text-white); 
-            font-family: 'Inter', sans-serif;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 40px 20px;
-        }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        .container { max-width: 1000px; width: 100%; }
+<style>
 
-        .back-btn { text-decoration: none; color: var(--text-gray); font-weight: 700; font-size: 13px; margin-bottom: 30px; display: inline-block; transition: 0.2s; }
-        .back-btn:hover { color: var(--accent-orange); }
+:root{
+    --bg:#050505;
+    --card:#0c0c0c;
+    --border:#1d1d1d;
+    --orange:#ff9900;
+    --white:#ffffff;
+    --gray:#777;
+}
 
-        .header { margin-bottom: 30px; }
-        .header h1 { font-size: 32px; font-weight: 900; }
-        .header p { color: var(--text-gray); font-size: 14px; margin-top: 5px; }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
 
-        .store-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 16px; 
-        }
+body{
+    background:var(--bg);
+    color:var(--white);
+    padding:40px 20px;
+}
 
-        .card {
-            background: var(--card-gray);
-            border: 1px solid var(--border-gray);
-            border-radius: 12px;
-            padding: 24px;
-            transition: 0.2s ease;
-            cursor: pointer;
-            position: relative;
-        }
-        .card:hover { border-color: #333; transform: translateY(-3px); }
-        .card.popular { border-color: var(--accent-orange); background: rgba(255,153,1,0.02); }
+.container{
+    max-width:1100px;
+    margin:auto;
+}
 
-        .badge { 
-            background: var(--accent-orange); color: #000; 
-            font-size: 10px; font-weight: 900; padding: 3px 8px; 
-            border-radius: 4px; display: inline-block; margin-bottom: 10px;
-        }
+.back{
+    color:#666;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:700;
+}
 
-        .item-title { font-size: 18px; font-weight: 800; }
-        .item-desc { font-size: 12px; color: var(--text-gray); margin-bottom: 20px; }
-        .price { font-size: 20px; font-weight: 900; }
-        .price span { font-size: 11px; color: var(--text-gray); }
+.header{
+    margin-top:25px;
+    margin-bottom:40px;
+}
 
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1000; display:none; align-items:center; justify-content:center; }
-        .modal-content { background:#0d0d0d; border:1px solid #222; border-radius:16px; width:95%; max-width:440px; padding:32px; position:relative; }
-        .close-btn { position:absolute; top:20px; right:20px; color:#555; font-size:20px; cursor:pointer; }
-        
-        label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: #eee; }
-        input { width: 100%; background: #151515; border: 1px solid #252525; padding: 12px; border-radius: 8px; color: #fff; margin-bottom: 20px; outline: none; transition: 0.2s; }
-        input:focus { border-color: var(--accent-orange); }
+.header h1{
+    font-size:42px;
+    font-weight:900;
+}
 
-        .method-box { border: 1px solid #222; padding: 14px; border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
-        .method-box:hover { background: #151515; }
-        .method-box.selected { border-color: var(--accent-orange); background: rgba(255,153,1,0.05); }
-        
-        .payment-info-box { background: #111; border: 1px solid #222; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .address-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; word-break: break-all; font-family: monospace; font-size: 12px; }
-        .copy-icon { color: var(--text-gray); cursor: pointer; padding: 5px; }
-        
-        .alert-box { border-radius: 8px; padding: 12px; font-size: 12px; margin-bottom: 15px; line-height: 1.4; display: flex; gap: 10px; }
-        .alert-blue { background: rgba(59, 130, 246, 0.1); border: 1px solid #1e3a8a; color: #93c5fd; }
-        .alert-orange { background: rgba(255, 153, 1, 0.1); border: 1px solid #7c4a03; color: #fdba74; }
+.header p{
+    color:var(--gray);
+    margin-top:8px;
+}
 
-        .btn-row { display: flex; gap: 10px; margin-top: 20px; }
-        .primary-btn { flex: 2; background: var(--accent-orange); color: #000; border: none; padding: 14px; border-radius: 10px; font-weight: 800; cursor: pointer; }
-        .back-modal-btn { flex: 1; background: #000; color: #fff; border: 1px solid #222; border-radius: 10px; font-weight: 700; cursor: pointer; }
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
 
-        /* Google Pay Button Center Container */
-        #gpay-btn-container { display: flex; justify-content: center; width: 100%; margin-top: 10px; min-height: 40px; }
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:25px;
+    cursor:pointer;
+    transition:0.2s;
+}
 
-        @media (max-width: 768px) { .store-grid { grid-template-columns: 1fr; } }
-    </style>
+.card:hover{
+    transform:translateY(-5px);
+    border-color:var(--orange);
+}
+
+.badge{
+    background:var(--orange);
+    color:#000;
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.title{
+    font-size:25px;
+    font-weight:900;
+}
+
+.desc{
+    color:var(--gray);
+    margin-top:6px;
+    margin-bottom:20px;
+    font-size:14px;
+}
+
+.price{
+    font-size:32px;
+    font-weight:900;
+    color:var(--orange);
+}
+
+.price span{
+    font-size:13px;
+    color:var(--gray);
+}
+
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.modal-box{
+    width:95%;
+    max-width:520px;
+    background:#0a0a0a;
+    border:1px solid #222;
+    border-radius:20px;
+    padding:30px;
+    position:relative;
+}
+
+.close{
+    position:absolute;
+    top:15px;
+    right:20px;
+    color:#777;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.modal-title{
+    font-size:35px;
+    font-weight:900;
+}
+
+.modal-price{
+    color:var(--orange);
+    margin-top:5px;
+    font-weight:900;
+    font-size:22px;
+}
+
+label{
+    display:block;
+    margin-top:22px;
+    margin-bottom:8px;
+    font-size:13px;
+    font-weight:800;
+}
+
+input{
+    width:100%;
+    background:#141414;
+    border:1px solid #222;
+    border-radius:10px;
+    padding:15px;
+    color:white;
+    outline:none;
+}
+
+input:focus{
+    border-color:var(--orange);
+}
+
+.method{
+    margin-top:12px;
+    border:1px solid #222;
+    border-radius:10px;
+    padding:15px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.method:hover{
+    border-color:#ff9900;
+    background:#111;
+}
+
+.notice{
+    margin-top:18px;
+    background:#111;
+    border:1px solid #222;
+    padding:14px;
+    border-radius:10px;
+    font-size:13px;
+    color:#aaa;
+    line-height:1.5;
+}
+
+.manualBtn{
+    width:100%;
+    margin-top:20px;
+    background:#ff9900;
+    color:#000;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+#paypal-button-container{
+    margin-top:20px;
+}
+
+@media(max-width:700px){
+
+    .header h1{
+        font-size:30px;
+    }
+
+    .modal-title{
+        font-size:28px;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
 
-    <div class="container">
-        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> BACK TO HOME</a>
-        
-        <div class="header">
-            <h1>Server Crate Keys</h1>
-            <p>Enhance your journey with exclusive rewards</p>
-        </div>
+<div class="container">
 
-        <div class="store-grid">
-            <div class="card" onclick="openModal('Spawners Key', '$4.00')">
-                <h3 class="item-title">Spawners Key</h3>
-                <p class="item-desc">Unlock mob spawners</p>
-                <div class="price">$4.00 <span>USD</span></div>
-            </div>
+    <a href="index.html" class="back">
+        ← BACK TO HOME
+    </a>
 
-            <div class="card popular" onclick="openModal('Legendary Key', '$6.00')">
-                <div class="badge">BEST VALUE</div>
-                <h3 class="item-title">Legendary Key</h3>
-                <p class="item-desc">Highest tier rewards</p>
-                <div class="price" style="color: var(--accent-orange);">$6.00 <span>USD</span></div>
-            </div>
-
-            <div class="card" onclick="openModal('Epic Key', '$3.00')">
-                <h3 class="item-title">Epic Key</h3>
-                <p class="item-desc">High tier crate rewards</p>
-                <div class="price">$3.00 <span>USD</span></div>
-            </div>
-        </div>
+    <div class="header">
+        <h1>Server Crate Keys</h1>
+        <p>Enhance your journey with exclusive rewards</p>
     </div>
 
-    <div id="purchase-modal" class="modal-overlay">
-        <div class="modal-content" id="step-1">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modal-title" style="font-weight: 900; margin-bottom: 5px;">Purchase</h2>
-            <p style="font-weight: 800; margin-bottom: 25px;">Total: <span id="modal-price" style="color: var(--accent-orange);"></span></p>
+    <div class="grid">
 
-            <label>Minecraft Username *</label>
-            <input type="text" id="mc-user" placeholder="Enter your username">
-
-            <label>Discord Tag *</label>
-            <input type="text" id="discord-tag" placeholder="e.g. username#1234">
-
-            <label>Select Payment Method</label>
-            <div id="gpay-method-box" class="method-box" onclick="selectMethod('GPAY', this)" style="display: none;">
-                <b style="color: #ffffff;"><i class="fa-brands fa-google-pay fa-lg"></i></b> &nbsp; Google Pay
-            </div>
-            <div class="method-box" onclick="selectMethod('PP', this)">
-                <b style="color: #3b82f6;">PP</b> &nbsp; PayPal
-            </div>
-            <div class="method-box" onclick="selectMethod('TRX', this)">
-                <b style="color: #ff4b4b;">TRX</b> &nbsp; TRX (Tron TRC20)
-            </div>
-            <div class="method-box" onclick="selectMethod('LTC', this)">
-                <b style="color: #3b82f6;">LTC</b> &nbsp; LTC (Litecoin)
-            </div>
-
-            <button class="primary-btn" style="width: 100%; margin-top: 10px;" onclick="goToStep2()">Continue to Payment</button>
+        <div class="card" onclick="openModal('Spawners Key',4)">
+            <div class="title">Spawners Key</div>
+            <div class="desc">Unlock mob spawners</div>
+            <div class="price">$4.00 <span>USD</span></div>
         </div>
 
-        <div class="modal-content" id="step-2" style="display: none;">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 style="font-weight: 900; margin-bottom: 5px;">Complete Payment</h2>
-            <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 20px;">
-                <span id="step2-normal-text">Send exactly <span id="final-price" style="color: var(--accent-orange); font-weight: 800;"></span> worth of <span id="method-name"></span> to the address below</span>
-                <span id="step2-gpay-text" style="display: none;">Authorize and finalize your payment using Google Pay securely below</span>
-            </p>
-
-            <div id="manual-payment-ui">
-                <div class="payment-info-box">
-                    <label id="addr-label">Address</label>
-                    <div class="address-row">
-                        <span id="payment-address">Loading...</span>
-                        <i class="fa-regular fa-copy copy-icon" onclick="copyAddress()"></i>
-                    </div>
-                </div>
-
-                <div id="pp-ins" class="alert-box alert-blue" style="display: none;">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <p>Send payment as "Friends & Family" to avoid fees. Include your Minecraft username in the note.</p>
-                </div>
-
-                <div class="alert-box alert-orange">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    <p><b>Important:</b> After sending, click the button below to submit. We'll verify and deliver keys within 24 hours.</p>
-                </div>
-            </div>
-
-            <div id="gpay-payment-ui" style="display: none;">
-                <div id="gpay-btn-container"></div>
-                <div style="margin-top: 15px;" class="alert-box alert-blue">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <p>Secured by Google. Your real payment card token details remain fully encrypted during dispatch.</p>
-                </div>
-            </div>
-
-            <div class="btn-row">
-                <button class="back-modal-btn" onclick="backToStep1()">Back</button>
-                <button id="manual-submit-btn" class="primary-btn" onclick="submitOrder()">I've Sent Payment</button>
-            </div>
+        <div class="card" onclick="openModal('Legendary Key',6)">
+            <div class="badge">BEST VALUE</div>
+            <div class="title">Legendary Key</div>
+            <div class="desc">Highest tier rewards</div>
+            <div class="price">$6.00 <span>USD</span></div>
         </div>
+
+        <div class="card" onclick="openModal('Epic Key',3)">
+            <div class="title">Epic Key</div>
+            <div class="desc">High tier crate rewards</div>
+            <div class="price">$3.00 <span>USD</span></div>
+        </div>
+
     </div>
 
-    <script async src="https://pay.google.com/gp/p/js/pay.js" onload="onGooglePayLoaded()"></script>
+</div>
 
-    <script>
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/1491190292731134074/qcKCxShisQknNpYo6pYhggrJXU7sx6tmLbx_AqUP3Z8hz65R0kSuKeKTrTBH4BJP6VFd"; 
-        
-        let selectedItem = "";
-        let selectedPrice = "";
-        let selectedMethod = "";
-        let numericPrice = 0.00;
+<div class="modal" id="modal">
 
-        // Google Pay API global elements
-        let paymentsClient = null;
-        const gpayMerchantId = "BCR2DN5T57CO5N2B"; // Your production ID
+    <div class="modal-box">
 
-        const baseRequest = {
-            apiVersion: 2,
-            apiVersionMinor: 0
-        };
+        <div class="close" onclick="closeModal()">
+            ×
+        </div>
 
-        const allowedCardNetworks = ["AMEX", "DISCOVER", "JCB", "MASTERCARD", "VISA"];
-        const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+        <div class="modal-title" id="productTitle">
+            Purchase
+        </div>
 
-        const baseCardPaymentMethod = {
-            type: 'CARD',
-            parameters: {
-                allowedAuthMethods: allowedCardAuthMethods,
-                allowedCardNetworks: allowedCardNetworks
-            }
-        };
+        <div class="modal-price" id="productPrice">
+            $0
+        </div>
 
-        const cardPaymentMethod = Object.assign(
-            {},
-            baseCardPaymentMethod,
-            {
-                tokenizationSpecification: {
-                    type: 'PAYMENT_GATEWAY',
-                    parameters: {
-                        'gateway': 'stripe', // Replace with your live gateway name when setting up Stripe/etc.
-                        'gatewayMerchantId': 'pk_test_51Tf8eRCr0FNHIRbF6MshvGxS7xC0pHNTctbBUEwTnxK6dThSYkSMkr7jvyhPyEzmQ9NSqgUJTczDDbavDhjhr32S00m8coqRp6'
-                    }
-                }
-            }
-        );
+        <label>MINECRAFT USERNAME *</label>
+        <input type="text"
+               id="mcuser"
+               placeholder="Enter your username">
 
-        const addresses = {
-            'PP': 'nekkachemerouane5@gmail.com',
-            'TRX': 'TKGTcvQiFAF3pr1HdJLYrXvZXrCcXVg22J',
-            'LTC': 'LQb6oeUwogDdR7XkbqqgNJCYDzssu5g9pW'
-        };
+        <label>DISCORD TAG *</label>
+        <input type="text"
+               id="discord"
+               placeholder="e.g. username#1234">
 
-        function openModal(item, price) {
-            selectedItem = item;
-            selectedPrice = price;
-            numericPrice = parseFloat(price.replace('$', ''));
-            
-            document.getElementById('modal-title').innerText = "Purchase " + item;
-            document.getElementById('modal-price').innerText = price;
-            document.getElementById('purchase-modal').style.display = 'flex';
-        }
+        <label>SELECT PAYMENT METHOD</label>
 
-        function closeModal() {
-            document.getElementById('purchase-modal').style.display = 'none';
-            backToStep1();
-        }
+        <div class="method"
+             onclick="selectMethod('PAYPAL')">
 
-        function selectMethod(method, el) {
-            selectedMethod = method;
-            document.querySelectorAll('.method-box').forEach(b => b.classList.remove('selected'));
-            el.classList.add('selected');
-        }
+            <b style="color:#3b82f6;">PP</b>
 
-        function goToStep2() {
-            if(!document.getElementById('mc-user').value || !selectedMethod) return alert("Fill all fields!");
-            
-            document.getElementById('step-1').style.display = 'none';
-            document.getElementById('step-2').style.display = 'block';
-            
-            document.getElementById('final-price').innerText = selectedPrice;
-            document.getElementById('method-name').innerText = selectedMethod;
+            <span>PayPal / Google Pay</span>
 
-            if (selectedMethod === 'GPAY') {
-                // Adjust UI configurations for Google Pay
-                document.getElementById('step2-normal-text').style.display = 'none';
-                document.getElementById('step2-gpay-text').style.display = 'inline';
-                document.getElementById('manual-payment-ui').style.display = 'none';
-                document.getElementById('manual-submit-btn').style.display = 'none';
-                document.getElementById('gpay-payment-ui').style.display = 'block';
-                renderGooglePayButton();
-            } else {
-                // Adjust UI configurations back to standard transfer routes
-                document.getElementById('step2-normal-text').style.display = 'inline';
-                document.getElementById('step2-gpay-text').style.display = 'none';
-                document.getElementById('manual-payment-ui').style.display = 'block';
-                document.getElementById('manual-submit-btn').style.display = 'inline';
-                document.getElementById('gpay-payment-ui').style.display = 'none';
+        </div>
 
-                document.getElementById('payment-address').innerText = addresses[selectedMethod];
-                document.getElementById('addr-label').innerText = selectedMethod + " Address";
-                document.getElementById('pp-ins').style.display = (selectedMethod === 'PP') ? 'flex' : 'none';
-            }
-        }
+        <div class="method"
+             onclick="selectMethod('EMAIL')">
 
-        function backToStep1() {
-            document.getElementById('step-2').style.display = 'none';
-            document.getElementById('step-1').style.display = 'block';
-        }
+            <b style="color:#3b82f6;">MAIL</b>
 
-        function copyAddress() {
-            navigator.clipboard.writeText(document.getElementById('payment-address').innerText);
-            alert("Address copied!");
-        }
+            <span>PayPal Email Transfer</span>
 
-        /* --- GOOGLE PAY CORE LOGIC --- */
-        function getGooglePaymentsClient() {
-            if (paymentsClient === null) {
-                // Switch 'TEST' to 'PRODUCTION' once console review finishes
-                paymentsClient = new google.payments.api.PaymentsClient({ environment: 'PRODUCTION' });
-            }
-            return paymentsClient;
-        }
+        </div>
 
-        function onGooglePayLoaded() {
-            const client = getGooglePaymentsClient();
-            const isReadyToPayRequest = Object.assign({}, baseRequest);
-            isReadyToPayRequest.allowedPaymentMethods = [baseCardPaymentMethod];
+        <div class="method"
+             onclick="selectMethod('TRX')">
 
-            client.isReadyToPay(isReadyToPayRequest)
-                .then(function(response) {
-                    if (response.result) {
-                        // Display the button layout block inside the selectors
-                        document.getElementById('gpay-method-box').style.display = 'flex';
-                    }
+            <b style="color:#ff4444;">TRX</b>
+
+            <span>TRON TRC20</span>
+
+        </div>
+
+        <div class="method"
+             onclick="selectMethod('LTC')">
+
+            <b style="color:#4a8dff;">LTC</b>
+
+            <span>Litecoin</span>
+
+        </div>
+
+        <div id="paypal-button-container"
+             style="display:none;">
+        </div>
+
+        <div id="manualBox"
+             style="display:none;">
+
+            <div class="notice">
+
+                <div style="margin-bottom:10px;">
+                    Send payment to:
+                </div>
+
+                <div id="paymentAddress"
+                     style="
+                     word-break:break-all;
+                     color:#fff;
+                     font-weight:700;
+                     font-size:14px;
+                     ">
+                </div>
+
+            </div>
+
+            <button class="manualBtn"
+                    onclick="submitManual()">
+
+                I've Sent Payment
+
+            </button>
+
+        </div>
+
+        <div class="notice">
+            Secure payments powered by PayPal.<br>
+            Google Pay automatically appears if supported.
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+
+<script>
+
+let selectedItem = "";
+let selectedPrice = 0;
+let selectedMethod = "";
+
+const addresses = {
+
+    EMAIL: "nekkachemerouane5@gmail.com",
+
+    TRX: "TKGTcvQiFAF3pr1HdJLYrXvZXrCcXVg22J",
+
+    LTC: "LQb6oeUwogDdR7XkbqqgNJCYDzssu5g9pW"
+};
+
+function openModal(item, price){
+
+    selectedItem = item;
+    selectedPrice = price;
+
+    document.getElementById("productTitle").innerText =
+        "Purchase " + item;
+
+    document.getElementById("productPrice").innerText =
+        "$" + price.toFixed(2);
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal(){
+
+    document.getElementById("modal").style.display = "none";
+
+    document.getElementById("paypal-button-container").style.display = "none";
+
+    document.getElementById("manualBox").style.display = "none";
+
+    document.getElementById("paypal-button-container").innerHTML = "";
+}
+
+function selectMethod(method){
+
+    selectedMethod = method;
+
+    const mcuser =
+        document.getElementById("mcuser").value;
+
+    const discord =
+        document.getElementById("discord").value;
+
+    if(!mcuser || !discord){
+
+        alert("Fill all fields first");
+
+        return;
+    }
+
+    if(method === "PAYPAL"){
+
+        document.getElementById("manualBox").style.display = "none";
+
+        document.getElementById("paypal-button-container").style.display = "block";
+
+        renderPayPal();
+
+    }else{
+
+        document.getElementById("paypal-button-container").style.display = "none";
+
+        document.getElementById("manualBox").style.display = "block";
+
+        document.getElementById("paymentAddress").innerText =
+            addresses[method];
+    }
+}
+
+function renderPayPal(){
+
+    document.getElementById("paypal-button-container").innerHTML = "";
+
+    paypal.Buttons({
+
+        style:{
+            layout:'vertical',
+            color:'gold',
+            shape:'rect',
+            label:'paypal'
+        },
+
+        createOrder: async () => {
+
+            const response = await fetch("/create-order",{
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    amount:selectedPrice
                 })
-                .catch(function(err) {
-                    console.error("Google Pay device eligibility error: ", err);
-                });
-        }
 
-        function renderGooglePayButton() {
-            const container = document.getElementById('gpay-btn-container');
-            container.innerHTML = ""; // Clear button redraw loops
-            
-            const client = getGooglePaymentsClient();
-            const button = client.createButton({
-                buttonColor: 'white',
-                buttonType: 'buy',
-                onClick: onGooglePayButtonClicked
             });
-            container.appendChild(button);
-        }
 
-        function onGooglePayButtonClicked() {
-            const client = getGooglePaymentsClient();
-            const paymentDataRequest = Object.assign({}, baseRequest);
-            
-            paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
-            paymentDataRequest.transactionInfo = {
-                totalPriceStatus: 'FINAL',
-                totalPrice: numericPrice.toFixed(2),
-                currencyCode: 'USD',
-                countryCode: 'US'
-            };
-            paymentDataRequest.merchantInfo = {
-                merchantName: 'PanCake SMP',
-                merchantId: gpayMerchantId
-            };
+            const order = await response.json();
 
-            client.loadPaymentData(paymentDataRequest)
-                .then(function(paymentData) {
-                    // Extract payload metadata stringifying context
-                    const tokenData = paymentData.paymentMethodData.tokenizationData.token;
-                    submitOrder(tokenData);
+            return order.id;
+        },
+
+        onApprove: async (data) => {
+
+            const response = await fetch("/capture-order",{
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    orderID:data.orderID
                 })
-                .catch(function(err) {
-                    console.error("Payment authorization cancelled or failed", err);
-                });
-        }
 
-        /* --- ORDER DISPATCH LOGIC --- */
-        async function submitOrder(gpayToken = null) {
-            const user = document.getElementById('mc-user').value;
-            const discord = document.getElementById('discord-tag').value;
-            const finalOrderID = "ORD-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+            });
 
-            let paymentStatusStr = "Pending Manual Verification";
-            if (selectedMethod === 'GPAY' && gpayToken) {
-                paymentStatusStr = "Authorized via Google Pay API (Token Logged)";
+            const result = await response.json();
+
+            if(result.status === "COMPLETED"){
+
+                alert("Payment successful!");
+
+                closeModal();
+
+            }else{
+
+                alert("Payment failed");
+
             }
 
-            const embedData = {
-                embeds: [{
-                    title: "New Purchase Order",
-                    color: 16750849,
-                    fields: [
-                        { name: "Order ID", value: finalOrderID, inline: false },
-                        { name: "Item", value: selectedItem, inline: true },
-                        { name: "Price", value: selectedPrice, inline: true },
-                        { name: "Minecraft Username", value: user, inline: true },
-                        { name: "Discord", value: discord, inline: true },
-                        { name: "Payment Method", value: selectedMethod === 'GPAY' ? "Google Pay" : selectedMethod, inline: true },
-                        { name: "Status", value: paymentStatusStr, inline: false }
-                    ],
-                    footer: { text: "PancakeSMP Store • Live Dispatch" },
-                    timestamp: new Date().toISOString()
-                }]
-            };
+        },
 
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(embedData)
-                });
+        onError:(err)=>{
 
-                if(response.ok) {
-                    alert("Success! Your order has been processed.");
-                    closeModal();
-                } else {
-                    alert("Webhook structural check failed.");
-                }
-            } catch (e) {
-                alert("Connection failed.");
-            }
+            console.error(err);
+
+            alert("Payment failed");
+
         }
-    </script>
+
+    }).render("#paypal-button-container");
+}
+
+function submitManual(){
+
+    alert(
+        "Your payment will be verified manually."
+    );
+
+    closeModal();
+}
+
+</script>
+
 </body>
 </html>
