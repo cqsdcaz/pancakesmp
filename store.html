@@ -236,7 +236,7 @@
                     type: 'PAYMENT_GATEWAY',
                     parameters: {
                         'gateway': 'example', // Replace with your live gateway name when setting up Stripe/etc.
-                        'gatewayMerchantId': 'exampleGatewayMerchantId'
+                        'gatewayMerchantId': 'BCR2DN5T57CO5N2B'
                     }
                 }
             }
@@ -314,7 +314,7 @@
         function getGooglePaymentsClient() {
             if (paymentsClient === null) {
                 // Switch 'TEST' to 'PRODUCTION' once console review finishes
-                paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' });
+                paymentsClient = new google.payments.api.PaymentsClient({ environment: 'PRODUCTION' });
             }
             return paymentsClient;
         }
