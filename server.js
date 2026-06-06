@@ -4,8 +4,8 @@ const stripe = require('stripe')('sk_test_51Tf8eRCr0FNHIRbFSZZIuJJ3KDJZnh752LVl0
 
 const app = express();
 
-// Update origin to your GitHub Pages URL to fix CORS errors
-app.use(cors({ origin: "*" })); 
+// Allow requests from any origin (GitHub Pages site)
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 app.post('/create-payment-intent', async (req, res) => {
@@ -13,21 +13,21 @@ app.post('/create-payment-intent', async (req, res) => {
         const { amount, item, username, discord } = req.body;
 
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: Math.round(amount * 100),
+            amount: Math.round(amount * 100), // Stripe uses cents
             currency: 'usd',
             automatic_payment_methods: { enabled: true },
-            description: `${item} | MC: ${username} | Discord: ${discord}`
+            description: `Item: ${item} | User: ${username} | Discord: ${discord}`
         });
 
         res.send({ clientSecret: paymentIntent.client_secret });
     } catch (err) {
-        console.error(err);
+        console.error("Stripe Error:", err);
         res.status(500).send({ error: err.message });
     }
 });
 
-// Render requires the use of process.env.PORT
+// Use the dynamic port assigned by Render or default to 3000
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
