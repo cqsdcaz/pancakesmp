@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const stripe = require('stripe')('pk_test_51Tf8eRCr0FNHIRbF6MshvGxS7xC0pHNTctbBUEwTnxK6dThSYkSMkr7jvyhPyEzmQ9NSqgUJTczDDbavDhjhr32S00m8coqRp6');
+const stripe = require('stripe')('sk_test_51Tf8eRCr0FNHIRbFSZZIuJJ3KDJZnh752LVl0ZYNNfQLlf6IMGQ8hc04g87UswcmfhudTAtSflaweCkSxGPrLsAx00MVaqMxMH');
 
 const app = express();
 
