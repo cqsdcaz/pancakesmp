@@ -4,54 +4,30 @@ const stripe = require('stripe')('sk_test_51Tf8eRCr0FNHIRbFSZZIuJJ3KDJZnh752LVl0
 
 const app = express();
 
-app.use(cors());
+// Update origin to your GitHub Pages URL to fix CORS errors
+app.use(cors({ origin: "*" })); 
 app.use(express.json());
 
 app.post('/create-payment-intent', async (req, res) => {
-
     try {
+        const { amount, item, username, discord } = req.body;
 
-        const {
-            amount,
-            item,
-            username,
-            discord
-        } = req.body;
-
-        const paymentIntent =
-            await stripe.paymentIntents.create({
-
-                amount: Math.round(amount * 100),
-
-                currency: 'usd',
-
-                automatic_payment_methods: {
-                    enabled: true
-                },
-
-                description:
-                    `${item} | MC: ${username} | Discord: ${discord}`
-            });
-
-        res.send({
-            clientSecret: paymentIntent.client_secret
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: Math.round(amount * 100),
+            currency: 'usd',
+            automatic_payment_methods: { enabled: true },
+            description: `${item} | MC: ${username} | Discord: ${discord}`
         });
 
+        res.send({ clientSecret: paymentIntent.client_secret });
     } catch (err) {
-
         console.error(err);
-
-        res.status(500).send({
-            error: err.message
-        });
-
+        res.status(500).send({ error: err.message });
     }
-
 });
 
-app.listen(3000, () => {
-
-    console.log('Server running on port 3000');
-
+// Render requires the use of process.env.PORT
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
-```
